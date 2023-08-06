@@ -44,7 +44,7 @@ xcodebuild -create-xcframework \
 ditto -c -k --sequesterRsrc --keepParent ".tmp/VLCKit-all.xcframework" ".tmp/VLCKit-all.xcframework.zip"
 
 #Update package file
-PACKAGE_HASH=$(sha256sum ".tmp/VLCKit-all.xcframework.zip" | awk '{ print $1 }')
+PACKAGE_HASH=$(swift package compute-checksum ".tmp/VLCKit-all.xcframework.zip")
 PACKAGE_STRING="Target.binaryTarget(name: \"VLCKit-all\", url: \"https:\/\/github.com\/tylerjonesio\/vlckit-spm\/releases\/download\/$TAG_VERSION\/VLCKit-all.xcframework.zip\", checksum: \"$PACKAGE_HASH\")"
 echo "Changing package definition for xcframework with hash $PACKAGE_HASH"
 sed -i '' -e "s/let vlcBinary.*/let vlcBinary = $PACKAGE_STRING/" Package.swift
